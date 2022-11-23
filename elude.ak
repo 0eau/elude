@@ -24,35 +24,35 @@ pub fn any(f: fn(a) -> Bool, list: List(a)) -> Bool {
 }
 
 pub fn and(f: fn(a) -> Bool, list: List(a)) -> Bool {
-  fn and'(l: List(a)) {
+  let and_ = fn(l: List(a)) -> Bool {
     let empty = builtin.nullList(l)
-    if (empty) {
+    if empty {
       True
-    }else {
-      if (f(unsafeHead(l))){
-        and'(tail(l))
-      }else{
-        False
-      }
+    } else {
+      if f(unsafeHead(l)) {
+      and_(tail(l))
+    } else {
+      False
+    }
     }
   }
-  and'(list)
+  and_(list)
 }
 
 pub fn or(f: fn(a) -> Bool, list: List(a)) -> Bool {
-  fn or'(l: List(a)) {
+  let or_ = fn(l: List(a)) -> Bool {
     let empty = builtin.nullList(l)
-    if (empty) {
+    if empty {
       False
-    }else {
-      if (f(unsafeHead(l))){
-        True
-      }else{
-        or'(tail(l))
-      }
+    } else {
+      if f(unsafeHead(l)) {
+      True
+    } else {
+      or_(tail(l))
+    }
     }
   }
-  or'(list)
+  or_(list)
 }
 
 pub fn where(f: fn(a) -> Bool, list: List(a)) -> Option(a) {
@@ -97,23 +97,23 @@ pub fn map(f: fn(a) -> b, list: List(a)) -> List(b) {
   }
 }
 
-pub fn empty(l: List(a))->Bool {
+pub fn empty(l: List(a)) -> Bool {
   builtin.nullList(l)
 }
 
-pub fn unsafeHead(l: List(a))->a {
+pub fn unsafeHead(l: List(a)) -> a {
   builtin.head(l)
 }
 
-pub fn head(l: List(a))->Option(a){
+pub fn head(l: List(a)) -> Option(a) {
   if !empty(l) {
     Some(builtin.head(l))
-  }else{
+  } else {
     None
   }
 }
 
-pub fn tail(l: List(a))->List(a) {
+pub fn tail(l: List(a)) -> List(a) {
   builtin.tailList(l)
 }
 
@@ -125,22 +125,22 @@ pub fn singletonList(list: List(a)) -> Bool {
   }
 }
 
-pub fn id(a: a)->a{
+pub fn id(a: a) -> a {
   a
 }
 
-pub fn constant(x: a, _:b)->a {
+pub fn constant(x: a, _: b) -> a {
   x
 }
 
-pub fn flip(f: fn(a, b)->c, b: b, a: a){
+pub fn flip(f: fn(a, b) -> c, b: b, a: a) {
   f(b, a)
 }
 
-pub fn until(f: fn(a) -> Bool, g: f: fn(a) -> a, x: a) -> a {
+pub fn until(f: fn(a) -> Bool, g: fn(a) -> a, x: a) -> a {
   if f(x) {
     x
-  }else{
+  } else {
     until(f, g, g(x))
   }
 }
