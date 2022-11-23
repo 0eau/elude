@@ -23,6 +23,38 @@ pub fn any(f: fn(a) -> Bool, list: List(a)) -> Bool {
   }
 }
 
+pub fn and(f: fn(a) -> Bool, list: List(a)) -> Bool {
+  fn and'(l: List(a)) {
+    let empty = builtin.nullList(l)
+    if (empty) {
+      True
+    }else {
+      if (f(unsafeHead(l))){
+        and'(tail(l))
+      }else{
+        False
+      }
+    }
+  }
+  and'(list)
+}
+
+pub fn or(f: fn(a) -> Bool, list: List(a)) -> Bool {
+  fn or'(l: List(a)) {
+    let empty = builtin.nullList(l)
+    if (empty) {
+      False
+    }else {
+      if (f(unsafeHead(l))){
+        True
+      }else{
+        or'(tail(l))
+      }
+    }
+  }
+  or'(list)
+}
+
 pub fn where(f: fn(a) -> Bool, list: List(a)) -> Option(a) {
   let empty = builtin.nullList(list)
   if empty {
@@ -65,11 +97,23 @@ pub fn map(f: fn(a) -> b, list: List(a)) -> List(b) {
   }
 }
 
-pub fn empty(l: List(a)) {
+pub fn empty(l: List(a))->Bool {
   builtin.nullList(l)
 }
 
-pub fn tail(l: List(a)) {
+pub fn unsafeHead(l: List(a))->a {
+  builtin.head(l)
+}
+
+pub fn head(l: List(a))->Option(a){
+  if !empty(l) {
+    Some(builtin.head(l))
+  }else{
+    None
+  }
+}
+
+pub fn tail(l: List(a))->List(a) {
   builtin.tailList(l)
 }
 
@@ -78,5 +122,25 @@ pub fn singletonList(list: List(a)) -> Bool {
     empty(tail(list))
   } else {
     False
+  }
+}
+
+pub fn id(a: a)->a{
+  a
+}
+
+pub fn constant(x: a, _:b)->a {
+  x
+}
+
+pub fn flip(f: fn(a, b)->c, b: b, a: a){
+  f(b, a)
+}
+
+pub fn until(f: fn(a) -> Bool, g: f: fn(a) -> a, x: a) -> a {
+  if f(x) {
+    x
+  }else{
+    until(f, g, g(x))
   }
 }
