@@ -3,76 +3,101 @@ use elude/types.{None, Option, Some}
 
 pub fn foldl(f: fn(b, a) -> b, base: b, list: List(a)) -> b {
   when list is {
-    []->base
-    [x, ..xs]->foldl(f, f(base, x), xs)
+    [] -> base
+    [x, ..xs] -> foldl(f, f(base, x), xs)
   }
 }
 
 pub fn any(f: fn(a) -> Bool, list: List(a)) -> Bool {
   when list is {
-    []->False
-    [x, ..xs]->if f(x) {True} else {any(f, xs)}
+    [] -> False
+    [x, ..xs] ->
+      if f(x) {
+        True
+      } else {
+        any(f, xs)
+      }
   }
 }
 
 pub fn and(f: fn(a) -> Bool, list: List(a)) -> Bool {
   when list is {
-    []->True
-    [x, ..xs]->if f(x) {and(f, xs)} else {False}
+    [] -> True
+    [x, ..xs] ->
+      if f(x) {
+        and(f, xs)
+      } else {
+        False
+      }
   }
 }
 
 pub fn or(f: fn(a) -> Bool, list: List(a)) -> Bool {
   when list is {
-    []->False
-    [x, ..xs]->if f(x) {True} else {or(f, xs)}
+    [] -> False
+    [x, ..xs] ->
+      if f(x) {
+        True
+      } else {
+        or(f, xs)
+      }
   }
 }
 
 pub fn where(f: fn(a) -> Bool, list: List(a)) -> Option(a) {
   when list is {
-    []->None
-    [x, ..xs]->if f(x) {Some(x)} else {where(f, xs)}
+    [] -> None
+    [x, ..xs] ->
+      if f(x) {
+        Some(x)
+      } else {
+        where(f, xs)
+      }
   }
 }
 
 pub fn filter(f: fn(a) -> Bool, list: List(a)) -> List(a) {
   when list is {
     [] -> []
-    [x, ..xs]->if f(x){[x, ..filter(f, xs)]} else {filter(f, xs)}
+    [x, ..xs] ->
+      if f(x) {
+        [x, ..filter(f, xs)]
+      } else {
+        filter(f, xs)
+      }
   }
 }
 
 pub fn map(f: fn(a) -> b, list: List(a)) -> List(b) {
   when list is {
     [] -> []
-    [x, ..xs]->[f(x), ..map(f, xs)]
+    [x, ..xs] -> [f(x), ..map(f, xs)]
   }
 }
 
 pub fn empty(l: List(a)) -> Bool {
   when l is {
-    []->True
-    _->False
+    [] -> True
+    _ -> False
   }
 }
 
 pub fn unsafeHead(l: List(a)) -> a {
-  assert [x, ..xs] is l
+  assert [x, ..xs] = l
   x
 }
 
 pub fn head(l: List(a)) -> Option(a) {
   when l is {
-    [x, ..xs]->Some(x)
-    _->None
+    [x, ..xs] -> Some(x)
+    _ -> None
   }
 }
 
 pub fn tail(l: List(a)) -> List(a) {
   when l is {
-    [_,..xs]->xs
-    _->[]
+    [_, ..xs] -> xs
+    _ -> []
   }
 }
 
@@ -83,10 +108,11 @@ pub fn isSingle(list: List(a)) -> Bool {
     False
   }
 }
+
 pub fn isSingle2(list: List(a)) -> Bool {
   when list is {
-    [x]->True
-    _->False
+    [x] -> True
+    _ -> False
   }
 }
 
@@ -98,9 +124,9 @@ pub fn constant(x: a, _: b) -> a {
   x
 }
 
-// pub fn flip(f: fn(a, b) -> c, b: b, a: a) {
-//   f(b, a)
-// }
+pub fn flip(f: fn(a, b) -> c, x: b, y: a) -> c {
+  f(y, x)
+}
 
 pub fn until(f: fn(a) -> Bool, g: fn(a) -> a, x: a) -> a {
   if f(x) {
