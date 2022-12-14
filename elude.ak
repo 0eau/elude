@@ -1,14 +1,13 @@
-use aiken/builtin
 use elude/types.{None, Option, Some}
 
-pub fn foldl(f: fn(b, a) -> b, base: b, list: List(a)) -> b {
+pub fn foldl(f: fn(b, a) -> b, base: b, list: List<a>) -> b {
   when list is {
     [] -> base
     [x, ..xs] -> foldl(f, f(base, x), xs)
   }
 }
 
-pub fn any(f: fn(a) -> Bool, list: List(a)) -> Bool {
+pub fn any(f: fn(a) -> Bool, list: List<a>) -> Bool {
   when list is {
     [] -> False
     [x, ..xs] ->
@@ -20,7 +19,7 @@ pub fn any(f: fn(a) -> Bool, list: List(a)) -> Bool {
   }
 }
 
-pub fn and(f: fn(a) -> Bool, list: List(a)) -> Bool {
+pub fn and(f: fn(a) -> Bool, list: List<a>) -> Bool {
   when list is {
     [] -> True
     [x, ..xs] ->
@@ -32,7 +31,7 @@ pub fn and(f: fn(a) -> Bool, list: List(a)) -> Bool {
   }
 }
 
-pub fn or(f: fn(a) -> Bool, list: List(a)) -> Bool {
+pub fn or(f: fn(a) -> Bool, list: List<a>) -> Bool {
   when list is {
     [] -> False
     [x, ..xs] ->
@@ -44,7 +43,7 @@ pub fn or(f: fn(a) -> Bool, list: List(a)) -> Bool {
   }
 }
 
-pub fn where(f: fn(a) -> Bool, list: List(a)) -> Option(a) {
+pub fn where(f: fn(a) -> Bool, list: List<a>) -> Option<a> {
   when list is {
     [] -> None
     [x, ..xs] ->
@@ -56,7 +55,7 @@ pub fn where(f: fn(a) -> Bool, list: List(a)) -> Option(a) {
   }
 }
 
-pub fn filter(f: fn(a) -> Bool, list: List(a)) -> List(a) {
+pub fn filter(f: fn(a) -> Bool, list: List<a>) -> List<a> {
   when list is {
     [] -> []
     [x, ..xs] ->
@@ -68,40 +67,40 @@ pub fn filter(f: fn(a) -> Bool, list: List(a)) -> List(a) {
   }
 }
 
-pub fn map(f: fn(a) -> b, list: List(a)) -> List(b) {
+pub fn map(f: fn(a) -> b, list: List<a>) -> List<b> {
   when list is {
     [] -> []
     [x, ..xs] -> [f(x), ..map(f, xs)]
   }
 }
 
-pub fn empty(l: List(a)) -> Bool {
+pub fn empty(l: List<a>) -> Bool {
   when l is {
     [] -> True
     _ -> False
   }
 }
 
-pub fn unsafeHead(l: List(a)) -> a {
-  assert [x, ..xs] = l
+pub fn unsafeHead(l: List<a>) -> a {
+  assert [x, .._] = l
   x
 }
 
-pub fn head(l: List(a)) -> Option(a) {
+pub fn head(l: List<a>) -> Option<a> {
   when l is {
-    [x, ..xs] -> Some(x)
+    [x, .._] -> Some(x)
     _ -> None
   }
 }
 
-pub fn tail(l: List(a)) -> List(a) {
+pub fn tail(l: List<a>) -> List<a> {
   when l is {
     [_, ..xs] -> xs
     _ -> []
   }
 }
 
-pub fn isSingle(list: List(a)) -> Bool {
+pub fn isSingle(list: List<a>) -> Bool {
   if !empty(list) {
     empty(tail(list))
   } else {
@@ -109,9 +108,9 @@ pub fn isSingle(list: List(a)) -> Bool {
   }
 }
 
-pub fn isSingle2(list: List(a)) -> Bool {
+pub fn isSingle2(list: List<a>) -> Bool {
   when list is {
-    [x] -> True
+    [_] -> True
     _ -> False
   }
 }
