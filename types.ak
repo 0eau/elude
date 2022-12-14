@@ -1,4 +1,4 @@
-pub type Option(a) {
+pub type Option<a> {
   None
   Some(a)
 }
