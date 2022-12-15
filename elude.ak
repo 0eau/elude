@@ -43,14 +43,14 @@ pub fn or(f: fn(a) -> Bool, list: List<a>) -> Bool {
   }
 }
 
-pub fn where(f: fn(a) -> Bool, list: List<a>) -> Option<a> {
+pub fn find(f: fn(a) -> Bool, list: List<a>) -> Option<a> {
   when list is {
     [] -> None
     [x, ..xs] ->
       if f(x) {
         Some(x)
       } else {
-        where(f, xs)
+        find(f, xs)
       }
   }
 }
