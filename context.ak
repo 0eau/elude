@@ -77,7 +77,7 @@ pub type Credential {
 }
 
 pub type VerificationKey =
-  Nil
+  ByteArray
 
 pub type ScriptHash =
   ByteArray
